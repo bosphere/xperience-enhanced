@@ -96,6 +96,7 @@ static double clockFaces[2][6][4][2] =  // calculated Screen coordinates
 	{-1, 12, 14, 15, 16, 17}
 };
 
+static bool USE_24H_CLOCK;
 static bool selectedDigits[24];
 
 static GPathInfo facesDigits[4][6];
@@ -305,8 +306,9 @@ void timeChanged(struct tm *tick_time, TimeUnits units_changed) {
 		 selectedDigits[i] = false;
 	 }
 	 
-	 int tensHour = tick_time->tm_hour / 10;
-	 int onesHour = tick_time->tm_hour - tensHour*10;
+   int hour = USE_24H_CLOCK? tick_time->tm_hour : tick_time->tm_hour % 12;
+   int tensHour = hour / 10;
+	 int onesHour = hour - tensHour*10;
 	 
 	 int tensMins = tick_time->tm_min / 10;
 	 int onesMins = tick_time->tm_min - tensMins * 10;
@@ -366,6 +368,7 @@ static void init(void) {
   last_bluetooth = false;
   handle_bluetooth(bluetooth_connection_service_peek());
   
+  USE_24H_CLOCK = clock_is_24h_style();
   tick_timer_service_subscribe(MINUTE_UNIT, timeChanged);
   battery_state_service_subscribe(&handle_battery);
   bluetooth_connection_service_subscribe(&handle_bluetooth);
