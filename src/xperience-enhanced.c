@@ -262,7 +262,7 @@ static void battery_update_proc(Layer *layer, GContext *ctx) {
   graphics_context_set_stroke_color(ctx, GColorWhite);
   graphics_draw_rect(ctx, GRect(1, 0, 21, 10));
   
-  if(last_battery >= 10) {
+  if(last_battery >= 20) {
     graphics_fill_rect(ctx, GRect(18, 2, 2, 6), 0, GCornerNone);
   }
   if(last_battery >= 30) {
